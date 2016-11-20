@@ -19,6 +19,7 @@ public class ErrorCode {
 	public static final short LOGIN_USER_EMPTY_USERNAME_OR_PASS = 105;		// tên đăng nhập hoặc mật khẩu rỗng
 	public static final short SESSION_EXPIRED = 106;						// session đã hết hạn
 	public static final short LOGIN_OTHER_DEIVCE = 107;						// đăng nhập ở thiết bị khác
+	public static final short LOGIN_IS_REQUIRED = 108;						// đăng nhập ở thiết bị khác
 	
 	public static final short JOIN_ROOM_FAILED = 110; 						// JOIN_ROOM thất bại
 	public static final short CREATE_ROOM_FAILED = 111; 					// CREATE_ROOM thất bại

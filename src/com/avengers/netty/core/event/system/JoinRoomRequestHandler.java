@@ -25,6 +25,12 @@ public class JoinRoomRequestHandler extends AbstractRequestHandler {
 
 	@Override
 	public void perform(User user, IMessage message) {
+		if (user.getName() == null) {
+			writeErrorMessage(user, SystemNetworkConstant.COMMAND_USER_JOIN_ROOM, ErrorCode.LOGIN_IS_REQUIRED,
+					"Vui lòng đăng nhập trước khi join room.");
+			return;
+		}
+
 		Integer roomId = message.getInt(SystemNetworkConstant.KEYI_ROOM_ID);
 		if (roomId == null) {
 			writeErrorMessage(user, SystemNetworkConstant.COMMAND_USER_JOIN_ROOM, ErrorCode.ROOM_NOT_FOUND,
