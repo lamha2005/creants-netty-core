@@ -24,6 +24,7 @@ import com.avengers.netty.core.util.Tracer;
 import com.avengers.netty.gamelib.GameExtension;
 import com.avengers.netty.gamelib.key.ErrorCode;
 import com.avengers.netty.gamelib.key.NetworkConstant;
+import com.avengers.netty.gamelib.service.CacheService;
 import com.avengers.netty.socket.gate.IMessage;
 import com.avengers.netty.socket.gate.wood.Message;
 import com.avengers.netty.socket.gate.wood.User;
@@ -204,6 +205,8 @@ public class CoreAPI implements ICoreAPI {
 				throw new JoinRoomException(message, data);
 			}
 
+			CacheService.getInstace().joinRoom(user.getCreantUserId(), roomToJoin);
+
 			// TODO check số lượng user luôn
 
 			// rời phòng trước đó
@@ -268,6 +271,7 @@ public class CoreAPI implements ICoreAPI {
 			Tracer.debugRoom(CoreAPI.class, String.format("[DEBUG] remove room: %s", room.getName()));
 		}
 
+		CacheService.getInstace().freeLastRoom(user.getCreantUserId());
 		user.updateLastRequestTime();
 
 		// fireEvent cho extension xu ly tiep

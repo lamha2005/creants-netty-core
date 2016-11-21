@@ -3,7 +3,7 @@ package com.avengers.netty.gamelib.service;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.avengers.netty.core.om.Room;
+import com.avengers.netty.core.om.IRoom;
 
 /**
  * @author LamHa
@@ -11,7 +11,7 @@ import com.avengers.netty.core.om.Room;
  */
 public class CacheService {
 	private static CacheService instance;
-	private Map<Integer, Room> userInRoomMap;
+	private Map<Integer, IRoom> userInRoomMap;
 
 	public static CacheService getInstace() {
 		if (instance == null)
@@ -20,14 +20,14 @@ public class CacheService {
 	}
 
 	private CacheService() {
-		userInRoomMap = new ConcurrentHashMap<Integer, Room>();
+		userInRoomMap = new ConcurrentHashMap<Integer, IRoom>();
 	}
 
-	public Room getLastRoomByUser(int creantUserId) {
+	public IRoom getLastRoomByUser(int creantUserId) {
 		return userInRoomMap.get(creantUserId);
 	}
 
-	public void joinRoom(int creantUserId, Room room) {
+	public void joinRoom(int creantUserId, IRoom room) {
 		userInRoomMap.put(creantUserId, room);
 	}
 
