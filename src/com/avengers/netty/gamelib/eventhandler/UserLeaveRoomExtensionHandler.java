@@ -10,8 +10,8 @@ import com.avengers.netty.core.exception.JoinRoomException;
 import com.avengers.netty.core.extensions.BaseServerEventHandler;
 import com.avengers.netty.core.om.IRoom;
 import com.avengers.netty.core.service.GameManager;
+import com.avengers.netty.core.util.CoreTracer;
 import com.avengers.netty.core.util.DefaultMessageFactory;
-import com.avengers.netty.core.util.Tracer;
 import com.avengers.netty.gamelib.GameExtension;
 import com.avengers.netty.socket.gate.wood.User;
 
@@ -36,7 +36,7 @@ public class UserLeaveRoomExtensionHandler extends BaseServerEventHandler {
 
 		// rời game trở về lobby
 		IRoom lobby = GameManager.getInstance().getLobbyGame(user.getCurrentGameId());
-		Tracer.debugRoom(UserLeaveRoomExtensionHandler.class, "User: " + user.getName() + " rejoin to lobby");
+		CoreTracer.debug(this.getClass(), "User: " + user.getName() + " rejoin to lobby");
 
 		try {
 			gameExtension.getApi().joinRoom(user, lobby);

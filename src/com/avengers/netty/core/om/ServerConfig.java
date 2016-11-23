@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import com.avengers.netty.core.util.Tracer;
+import com.avengers.netty.core.util.CoreTracer;
 
 import io.netty.util.Version;
 
@@ -71,7 +71,7 @@ public class ServerConfig {
 
 	public static void init(Properties prop) {
 		if (prop == null) {
-			Tracer.error(ServerConfig.class, "Can't load config of Server, Check the path file");
+			CoreTracer.error(ServerConfig.class, "Can't load config of Server, Check the path file");
 			return;
 		}
 

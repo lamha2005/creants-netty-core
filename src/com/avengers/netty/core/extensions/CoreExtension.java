@@ -1,10 +1,7 @@
 package com.avengers.netty.core.extensions;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.avengers.netty.core.event.ICoreEvent;
-import com.avengers.netty.core.util.Tracer;
+import com.avengers.netty.core.util.CoreTracer;
 import com.avengers.netty.socket.gate.IMessage;
 import com.avengers.netty.socket.gate.wood.User;
 
@@ -13,7 +10,6 @@ import com.avengers.netty.socket.gate.wood.User;
  *
  */
 public abstract class CoreExtension extends BaseExtension {
-	private static final Logger LOG = LoggerFactory.getLogger(CoreExtension.class);
 	public static final String MULTIHANDLER_REQUEST_ID = "__[[REQUEST_ID]]__";
 	private final IHandlerFactory handlerFactory;
 
@@ -34,7 +30,7 @@ public abstract class CoreExtension extends BaseExtension {
 							handlerClass, commandId));
 		}
 
-		Tracer.info(CoreExtension.class, "+ [" + handlerClass.getName() + "]");
+		CoreTracer.info(CoreExtension.class, "+ [" + handlerClass.getName() + "]");
 		handlerFactory.addHandler(commandId, handlerClass);
 	}
 
@@ -83,7 +79,7 @@ public abstract class CoreExtension extends BaseExtension {
 			}
 			handler.handleClientRequest(sender, message);
 		} catch (Exception err) {
-			LOG.warn("Cannot instantiate handler class:", err);
+			CoreTracer.warn(this.getClass(), "Cannot instantiate handler class:", err);
 		}
 	}
 
@@ -98,7 +94,7 @@ public abstract class CoreExtension extends BaseExtension {
 			IServerEventHandler handler = (IServerEventHandler) findHandler;
 			handler.handleServerEvent(event);
 		} catch (Exception err) {
-			LOG.warn("Cannot instantiate handler class:", err);
+			CoreTracer.warn(this.getClass(), "Cannot instantiate handler class:", err);
 		}
 	}
 

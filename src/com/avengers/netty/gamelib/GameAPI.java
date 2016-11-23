@@ -7,8 +7,8 @@ import com.avengers.netty.core.event.SystemNetworkConstant;
 import com.avengers.netty.core.exception.RoomException;
 import com.avengers.netty.core.om.IRoom;
 import com.avengers.netty.core.om.ServerConfig;
+import com.avengers.netty.core.util.CoreTracer;
 import com.avengers.netty.core.util.DefaultMessageFactory;
-import com.avengers.netty.core.util.Tracer;
 import com.avengers.netty.gamelib.key.NetworkConstant;
 import com.avengers.netty.gamelib.om.RoomInfo;
 import com.avengers.netty.gamelib.scheduler.ITimerScheduler;
@@ -133,7 +133,7 @@ public class GameAPI {
 		Message message = DefaultMessageFactory.createMessage(SystemNetworkConstant.COMMAND_MONEY_CHANGE);
 		message.putString(SystemNetworkConstant.KEYS_JSON_DATA, jo.toString());
 		sendToUser(message, user);
-		Tracer.debug(GameAPI.class, "[INFO] ================ updateUserMoney:" + user.getUserName() + "/uid:"
+		CoreTracer.debug(GameAPI.class, "[INFO] ================ updateUserMoney:" + user.getUserName() + "/uid:"
 				+ user.getUid() + " /data: " + jo.toString());
 	}
 
@@ -164,7 +164,7 @@ public class GameAPI {
 			try {
 				gameController.getRoom().switchPlayerToSpectator(player);
 			} catch (RoomException e) {
-				Tracer.error(GameAPI.class, "[ERROR] switchPlayerToSpectator fail!", e);
+				CoreTracer.error(GameAPI.class, "[ERROR] switchPlayerToSpectator fail!", e);
 			}
 		}
 	}
@@ -188,7 +188,7 @@ public class GameAPI {
 				message.putInt(NetworkConstant.KEYI_PLAYER_ID, spectator.getPlayerId());
 				sendAllInRoom(message);
 			} catch (RoomException e) {
-				Tracer.error(GameAPI.class, "[ERROR] switchSpectatorToPlayer fail!", e);
+				CoreTracer.error(GameAPI.class, "[ERROR] switchSpectatorToPlayer fail!", e);
 			}
 		}
 	}

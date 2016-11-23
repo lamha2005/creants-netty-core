@@ -10,13 +10,12 @@ import com.avengers.netty.core.om.CreateRoomSettings;
 import com.avengers.netty.core.om.GameSettings;
 import com.avengers.netty.core.service.GameManager;
 import com.avengers.netty.core.service.RoomManager;
+import com.avengers.netty.core.util.CoreTracer;
 import com.avengers.netty.core.util.DefaultMessageFactory;
-import com.avengers.netty.core.util.Tracer;
 import com.avengers.netty.gamelib.key.ErrorCode;
 import com.avengers.netty.gamelib.key.NetworkConstant;
 import com.avengers.netty.gamelib.om.RoomInfo;
 import com.avengers.netty.socket.gate.IMessage;
-import com.avengers.netty.socket.gate.wood.Message;
 import com.avengers.netty.socket.gate.wood.User;
 
 /**
@@ -39,14 +38,14 @@ public class CreateRoomRequestHandler extends BaseClientRequestHandler {
 		if (betCoin == null)
 			betCoin = 0;
 
-		Tracer.debug(CreateRoomRequestHandler.class,
+		CoreTracer.debug(this.getClass(),
 				String.format("[DEBUG] [user: %s] request create room with betcon = %d", user.getUserName(), betCoin));
 
 		boolean checkEnoughMoney = user.getMoney() >= betCoin;
 		if (!checkEnoughMoney) {
 			send(DefaultMessageFactory.createErrorMessage(NetworkConstant.COMMAND_CREATE_ROOM,
 					ErrorCode.NOT_ENOUGH_MONEY, "Bạn không đủ tiền"), user);
-			Tracer.debugRoom(CreateRoomRequestHandler.class,
+			CoreTracer.debug(this.getClass(),
 					String.format("[DEBUG] [user: %s] Not enough money to create room!", user.getUserName()));
 			return;
 		}
@@ -76,12 +75,11 @@ public class CreateRoomRequestHandler extends BaseClientRequestHandler {
 		try {
 			getApi().createRoom(settings, user, true, false, false);
 		} catch (CreateRoomException e) {
-			Message errorMessage = DefaultMessageFactory.createErrorMessage(NetworkConstant.COMMAND_CREATE_ROOM,
-					ErrorCode.CREATE_ROOM_FAILED, e.getMessage());
-			send(errorMessage, user);
-			Tracer.errorRoom(CreateRoomRequestHandler.class,
+			send(DefaultMessageFactory.createErrorMessage(NetworkConstant.COMMAND_CREATE_ROOM,
+					ErrorCode.CREATE_ROOM_FAILED, e.getMessage()), user);
+
+			CoreTracer.error(this.getClass(),
 					String.format("[ERROR] [user: %s] %s!", user.getUserName(), e.getMessage()));
-			Tracer.error(CreateRoomRequestHandler.class, e.getMessage());
 		}
 	}
 

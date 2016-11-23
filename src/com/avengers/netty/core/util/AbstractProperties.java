@@ -41,7 +41,7 @@ public class AbstractProperties {
 		try {
 			rb = ResourceBundle.getBundle(filename, locale);
 		} catch (MissingResourceException mrEx) {
-			Tracer.error(AbstractProperties.class, "Reload AbstractProperties", mrEx);
+			CoreTracer.error(AbstractProperties.class, "Reload AbstractProperties", mrEx);
 		}
 	}
 
@@ -77,7 +77,7 @@ public class AbstractProperties {
 			}
 		} catch (Exception mrEx) {
 			// Return the default value.
-			Tracer.error(AbstractProperties.class, "Reload AbstractProperties", mrEx);
+			CoreTracer.error(AbstractProperties.class, "Reload AbstractProperties", mrEx);
 		}
 
 		return defaultValue;
@@ -110,7 +110,7 @@ public class AbstractProperties {
 		try {
 			return Integer.parseInt(get(key));
 		} catch (Exception mrEx) {
-			Tracer.error(AbstractProperties.class, "Reload AbstractProperties", mrEx);
+			CoreTracer.error(AbstractProperties.class, "Reload AbstractProperties", mrEx);
 			// Return the default value.
 		}
 
@@ -165,7 +165,7 @@ public class AbstractProperties {
 		try {
 			return getBoolean(key);
 		} catch (Exception mrEx) {
-			Tracer.error(AbstractProperties.class, "Reload AbstractProperties", mrEx);
+			CoreTracer.error(AbstractProperties.class, "Reload AbstractProperties", mrEx);
 			// Return the default value.
 		}
 

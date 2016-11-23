@@ -2,8 +2,6 @@ package com.avengers.netty.core.extensions;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-
 import com.avengers.netty.core.api.ICoreAPI;
 import com.avengers.netty.socket.gate.IMessage;
 import com.avengers.netty.socket.gate.wood.User;
@@ -39,7 +37,4 @@ public abstract class BaseServerEventHandler implements IServerEventHandler {
 		parentExtension.trace(args);
 	}
 
-	protected Logger getLogger() {
-		return parentExtension.getLogger();
-	}
 }

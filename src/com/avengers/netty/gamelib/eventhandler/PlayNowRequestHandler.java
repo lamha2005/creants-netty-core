@@ -4,8 +4,8 @@ import com.avengers.netty.core.exception.JoinRoomException;
 import com.avengers.netty.core.extensions.BaseClientRequestHandler;
 import com.avengers.netty.core.om.IRoom;
 import com.avengers.netty.core.service.GameManager;
+import com.avengers.netty.core.util.CoreTracer;
 import com.avengers.netty.core.util.DefaultMessageFactory;
-import com.avengers.netty.core.util.Tracer;
 import com.avengers.netty.gamelib.key.ErrorCode;
 import com.avengers.netty.gamelib.key.NetworkConstant;
 import com.avengers.netty.socket.gate.IMessage;
@@ -29,7 +29,7 @@ public class PlayNowRequestHandler extends BaseClientRequestHandler {
 
 	@Override
 	public void handleClientRequest(User user, IMessage message) {
-		Tracer.debug(this.getClass(), user.getUserName() + " request play now!");
+		CoreTracer.debug(this.getClass(), user.getUserName() + " request play now!");
 		byte gameId = user.getCurrentGameId();
 		if (gameId == -1) {
 			send(DefaultMessageFactory.createErrorMessage(NetworkConstant.COMMAND_AUTO_JOIN_ROOM,
@@ -45,13 +45,13 @@ public class PlayNowRequestHandler extends BaseClientRequestHandler {
 			return;
 		}
 
-		Tracer.debug(this.getClass(), "Find room:" + room.getName());
+		CoreTracer.debug(this.getClass(), "Find room:" + room.getName());
 		try {
 			getParentExtension().getApi().joinRoom(user, room, false, null);
 		} catch (JoinRoomException e) {
 			send(DefaultMessageFactory.createErrorMessage(NetworkConstant.COMMAND_AUTO_JOIN_ROOM,
 					ErrorCode.ROOM_NOT_FOUND, "Không tìm thấy room này trên hệ thống"), user);
-			Tracer.error(PlayNowRequestHandler.class, "[ERROR] handleClientRequest fail!", e);
+			CoreTracer.error(PlayNowRequestHandler.class, "[ERROR] handleClientRequest fail!", e);
 		}
 	}
 

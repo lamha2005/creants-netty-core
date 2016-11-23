@@ -18,8 +18,8 @@ import com.avengers.netty.core.event.handler.AbstractRequestHandler;
 import com.avengers.netty.core.event.handler.SystemHandlerManager;
 import com.avengers.netty.core.om.IRoom;
 import com.avengers.netty.core.service.GameManager;
+import com.avengers.netty.core.util.CoreTracer;
 import com.avengers.netty.core.util.DefaultMessageFactory;
-import com.avengers.netty.core.util.Tracer;
 import com.avengers.netty.gamelib.key.NetworkConstant;
 import com.avengers.netty.socket.gate.wood.ChannelService;
 import com.avengers.netty.socket.gate.wood.Message;
@@ -56,7 +56,7 @@ public class MessageHandler extends SimpleChannelInboundHandler<Message> {
 
 		synchronized (nextSessionId) {
 			long sessionId = nextSessionId.getAndIncrement();
-			Tracer.info(MessageHandler.class,
+			CoreTracer.info(MessageHandler.class,
 					"[INFO] [CLIENT] - " + remoteAddress.toString() + " connected -" + "sessionId:" + sessionId);
 			User user = channelService.connect(sessionId, channel);
 			send(user, DefaultMessageFactory.createConnectMessage(sessionId));
@@ -74,7 +74,7 @@ public class MessageHandler extends SimpleChannelInboundHandler<Message> {
 	 */
 	@Override
 	protected void channelRead0(final ChannelHandlerContext ctx, final Message message) throws Exception {
-		Tracer.debug(MessageHandler.class,
+		CoreTracer.debug(MessageHandler.class,
 				"\n[REQUEST]\n" + message.toString() + "\n[REQUEST]-----------------------------------");
 		Channel channel = ctx.channel();
 		User user = channelService.getUser(channel);
@@ -84,7 +84,7 @@ public class MessageHandler extends SimpleChannelInboundHandler<Message> {
 			if (handler != null) {
 				handler.perform(user, message);
 			} else {
-				Tracer.error(this.getClass(), "[ERROR] could not found system command: " + commandId);
+				CoreTracer.error(this.getClass(), "[ERROR] could not found system command: " + commandId);
 			}
 		} else {
 			IRoom room = user.getLastJoinedRoom();
@@ -116,7 +116,7 @@ public class MessageHandler extends SimpleChannelInboundHandler<Message> {
 				@Override
 				public void operationComplete(ChannelFuture future) throws Exception {
 					if (message.getCommandId() != SystemNetworkConstant.COMMAND_PING_PONG) {
-						Tracer.debug(MessageHandler.class,
+						CoreTracer.debug(MessageHandler.class,
 								"\n[RESPONSE]\n" + message.toString() + "\n[RESPONSE]------------------------------");
 					}
 				}
@@ -155,7 +155,7 @@ public class MessageHandler extends SimpleChannelInboundHandler<Message> {
 		// trường hợp disconnect/logout
 		Channel channel = ctx.channel();
 		User user = channelService.getUser(channel);
-		Tracer.debug(MessageHandler.class, "[DEBUG] disconnect - user:" + user.toString());
+		CoreTracer.debug(MessageHandler.class, "[DEBUG] disconnect - user:" + user.toString());
 
 		// fireEvent cho extension xu ly tiep
 		IRoom lastJoinedRoom = user.getLastJoinedRoom();
@@ -173,7 +173,7 @@ public class MessageHandler extends SimpleChannelInboundHandler<Message> {
 	}
 
 	public void removeUser(User user) {
-		Tracer.debug(MessageHandler.class, "[DEBUG] remove user in system. user: " + user.toString());
+		CoreTracer.debug(MessageHandler.class, "[DEBUG] remove user in system. user: " + user.toString());
 		channelService.getChannel(user.getSessionId()).close();
 		channelService.disconnect(user);
 	}

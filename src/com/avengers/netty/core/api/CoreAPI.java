@@ -19,8 +19,8 @@ import com.avengers.netty.core.om.CreateRoomSettings;
 import com.avengers.netty.core.om.IRoom;
 import com.avengers.netty.core.service.IUserManager;
 import com.avengers.netty.core.service.RoomManager;
+import com.avengers.netty.core.util.CoreTracer;
 import com.avengers.netty.core.util.DefaultMessageFactory;
-import com.avengers.netty.core.util.Tracer;
 import com.avengers.netty.gamelib.GameExtension;
 import com.avengers.netty.gamelib.key.ErrorCode;
 import com.avengers.netty.gamelib.key.NetworkConstant;
@@ -104,11 +104,11 @@ public class CoreAPI implements ICoreAPI {
 
 			newRoom = roomService.createRoom(setting, owner);
 			if (owner != null) {
-				Tracer.debugRoom(CoreAPI.class, String.format("[DEBUG] [user: %s] Created New Room [%s]",
+				CoreTracer.debug(this.getClass(), String.format("[DEBUG] [user: %s] Created New Room [%s]",
 						owner.getUserName(), newRoom.toString()));
 				owner.updateLastRequestTime();
 			} else {
-				Tracer.debugRoom(CoreAPI.class, String.format("[DEBUG] Created New Room [%s]", newRoom.getName()));
+				CoreTracer.debug(this.getClass(), String.format("[DEBUG] Created New Room [%s]", newRoom.getName()));
 			}
 
 			if (fireServerEvent) {
@@ -132,9 +132,9 @@ public class CoreAPI implements ICoreAPI {
 			try {
 				joinRoom(owner, newRoom, false, newRoom.getPassword());
 			} catch (JoinRoomException e) {
-				Tracer.error(CoreAPI.class,
+				CoreTracer.error(CoreAPI.class,
 						"Unable to join the just created Room: " + newRoom + ", reason: " + e.getMessage());
-				Tracer.error(CoreAPI.class,
+				CoreTracer.error(CoreAPI.class,
 						String.format("[DEBUG] [user: %s] Unable to join the just created Room [%s], msg: %s",
 								owner.getUserName(), newRoom.toString(), e.getMessage()));
 			}
@@ -186,7 +186,7 @@ public class CoreAPI implements ICoreAPI {
 
 			if (!roomToJoin.isActive()) {
 				String message = String.format("Room is currently locked, %s", new Object[] { roomToJoin });
-				Tracer.error(CoreAPI.class, message);
+				CoreTracer.error(CoreAPI.class, message);
 				CoreErrorData errData = new CoreErrorData(CoreErrorCode.JOIN_ROOM_LOCKED);
 				errData.addParameter(roomToJoin.getName());
 				throw new JoinRoomException(message, errData);
@@ -201,7 +201,7 @@ public class CoreAPI implements ICoreAPI {
 				String message = String.format("Room password is wrong, %s", new Object[] { roomToJoin });
 				CoreErrorData data = new CoreErrorData(CoreErrorCode.JOIN_BAD_PASSWORD);
 				data.addParameter(roomToJoin.getName());
-				Tracer.error(CoreAPI.class, "[ERROR] doorIsOpen fail!", message);
+				CoreTracer.error(CoreAPI.class, "[ERROR] doorIsOpen fail!", message);
 				throw new JoinRoomException(message, data);
 			}
 
@@ -218,7 +218,7 @@ public class CoreAPI implements ICoreAPI {
 			roomToJoin.addUser(user, joinAsSpectator);
 			user.updateLastRequestTime();
 
-			Tracer.debugRoom(CoreAPI.class, String.format("[DEBUG] [user:%s] join to room [%s] success!",
+			CoreTracer.debug(CoreAPI.class, String.format("[DEBUG] [user:%s] join to room [%s] success!",
 					user.getUserName(), roomToJoin.getName()));
 
 			// fireEvent cho extension xu ly tiep
@@ -230,11 +230,11 @@ public class CoreAPI implements ICoreAPI {
 			roomToJoin.getExtension().handleServerEvent(event);
 		} catch (JoinRoomException e) {
 			String message = String.format("Join Error - %s", new Object[] { e.getMessage() });
-			Tracer.error(CoreAPI.class, message, e);
+			CoreTracer.error(CoreAPI.class, message, e);
 			Message msg = DefaultMessageFactory.createErrorMessage(SystemNetworkConstant.COMMAND_USER_JOIN_ROOM,
 					ErrorCode.JOIN_ROOM_FAILED, message);
 			sendExtensionResponse(msg, user);
-			Tracer.errorRoom(CoreAPI.class, String.format("[DEBUG] [user:%s] join to room [%s] fail! %s",
+			CoreTracer.error(CoreAPI.class, String.format("[DEBUG] [user:%s] join to room [%s] fail! %s",
 					user.getUserName(), roomToJoin.getName(), e.getMessage()));
 		} finally {
 			user.setJoining(false);
@@ -254,12 +254,12 @@ public class CoreAPI implements ICoreAPI {
 			}
 		}
 
-		Tracer.debugRoom(CoreAPI.class,
+		CoreTracer.debug(CoreAPI.class,
 				String.format("[DEBUG] [user:%s] leaveRoom %s", user.getUserName(), room.getName()));
 
 		// không tồn tại user trong room đó
 		if (!room.containsUser(user)) {
-			Tracer.debugRoom(CoreAPI.class,
+			CoreTracer.debug(CoreAPI.class,
 					String.format("[DEBUG] [user:%s] leaveRoom fail! Not exist user in this room: %s",
 							user.getUserName(), room.getName()));
 			return;
@@ -268,7 +268,7 @@ public class CoreAPI implements ICoreAPI {
 		room.removeUser(user);
 		if (room.isEmpty() && room.isGame()) {
 			roomService.removeRoom(room);
-			Tracer.debugRoom(CoreAPI.class, String.format("[DEBUG] remove room: %s", room.getName()));
+			CoreTracer.debug(CoreAPI.class, String.format("[DEBUG] remove room: %s", room.getName()));
 		}
 
 		CacheService.getInstace().freeLastRoom(user.getCreantUserId());
@@ -286,7 +286,7 @@ public class CoreAPI implements ICoreAPI {
 	@Override
 	public void removeRoom(IRoom room) {
 		roomService.removeRoom(room);
-		Tracer.debugRoom(CoreAPI.class, String.format("[DEBUG] [room:%s] Removed!", room.getName()));
+		CoreTracer.debug(CoreAPI.class, String.format("[DEBUG] [room:%s] Removed!", room.getName()));
 	}
 
 	@Override

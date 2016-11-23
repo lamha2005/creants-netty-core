@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentMap;
 
 import com.avengers.netty.core.om.Device;
 import com.avengers.netty.core.om.IRoom;
-import com.avengers.netty.core.util.Tracer;
+import com.avengers.netty.core.util.CoreTracer;
 import com.avengers.netty.socket.gate.IUser;
 
 /**
@@ -201,7 +201,7 @@ public class User implements IUser {
 		}
 		Integer playerId = playerIdByRoomId.get(room.getId());
 		if (playerId == null) {
-			Tracer.debugGameLib(User.class,
+			CoreTracer.debug(User.class,
 					"Can't find playerID -- User: " + userName + " is not joined in the requested Room: " + room);
 			playerId = 0;
 		}

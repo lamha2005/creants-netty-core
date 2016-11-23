@@ -10,8 +10,8 @@ import com.avengers.netty.core.om.ServerConfig;
 import com.avengers.netty.core.om.cluster.ClusterRoom;
 import com.avengers.netty.core.service.GameManager;
 import com.avengers.netty.core.service.IClusterService;
+import com.avengers.netty.core.util.CoreTracer;
 import com.avengers.netty.core.util.DefaultMessageFactory;
-import com.avengers.netty.core.util.Tracer;
 import com.avengers.netty.gamelib.key.ErrorCode;
 import com.avengers.netty.gamelib.key.NetworkConstant;
 import com.avengers.netty.socket.gate.IMessage;
@@ -57,7 +57,7 @@ public class AutoJoinRoomRequestHandler extends BaseClientRequestHandler {
 			try {
 				getParentExtension().getApi().joinRoom(user, room, true, "");
 			} catch (JoinRoomException e) {
-				Tracer.error(AutoJoinRoomRequestHandler.class, "[ERROR] handleClientRequest fail!", e);
+				CoreTracer.error(AutoJoinRoomRequestHandler.class, "[ERROR] handleClientRequest fail!", e);
 			}
 		} else {
 			// trường hợp local hết phòng, tìm phòng trống trên cluster

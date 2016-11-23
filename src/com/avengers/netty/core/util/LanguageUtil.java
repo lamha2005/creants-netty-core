@@ -105,7 +105,7 @@ public class LanguageUtil {
 		try {
 			return ResourceBundle.getBundle(className, locale).getString(property);
 		} catch (Exception ex) {
-			Tracer.error(LanguageUtil.class, "LanguageUtil getMessage {className:" + className + ", property:"
+			CoreTracer.error(LanguageUtil.class, "LanguageUtil getMessage {className:" + className + ", property:"
 					+ property + ", locale:" + locale + "} error: ", ex);
 			return property;
 		}

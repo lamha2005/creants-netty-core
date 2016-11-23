@@ -7,7 +7,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import com.avengers.netty.core.om.ServerConfig;
-import com.avengers.netty.core.util.Tracer;
+import com.avengers.netty.core.util.CoreTracer;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
 /**
@@ -36,7 +36,7 @@ public class ThreadPoolManager {
 				ServerConfig.threadPoolBoardInsert_CacheTime, TimeUnit.MINUTES, new SynchronousQueue<Runnable>(),
 				new ThreadFactoryBuilder().setNameFormat("BoardPool-%d").build());
 
-		Tracer.info(ThreadPoolManager.class,
+		CoreTracer.info(ThreadPoolManager.class,
 				"Init Pool Manager done, LogPool: " + ServerConfig.threadPoolLogSize + ", APIPool: "
 						+ ServerConfig.threadPoolAPISize + ", BoardPool: " + ServerConfig.threadPoolBoardInsertSize);
 	}
@@ -46,7 +46,7 @@ public class ThreadPoolManager {
 		apiPools.shutdown();
 		boardPools.shutdown();
 
-		Tracer.info(ThreadPoolManager.class, "-------------SHUTDOWN ALL THREAD POOLS-------------");
+		CoreTracer.info(ThreadPoolManager.class, "-------------SHUTDOWN ALL THREAD POOLS-------------");
 	}
 
 	public ExecutorService getApiPool() {

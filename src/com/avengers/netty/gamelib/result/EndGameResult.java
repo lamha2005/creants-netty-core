@@ -3,7 +3,7 @@ package com.avengers.netty.gamelib.result;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.avengers.netty.core.util.Tracer;
+import com.avengers.netty.core.util.CoreTracer;
 import com.avengers.netty.gamelib.GameController;
 import com.avengers.netty.socket.gate.wood.Message;
 
@@ -27,7 +27,7 @@ public class EndGameResult implements IPlayMoveResult {
 		// Reporter.debug("update user: " + userResult.getUserId());
 		// }
 
-		Tracer.info(EndGameResult.class, "-----> END_GAME: " + extraDataResult.toString());
+		CoreTracer.info(EndGameResult.class, "-----> END_GAME: " + extraDataResult.toString());
 		gameController.getApi().sendAllInRoom(extraDataResult);
 		gameController.startCountdownStartGame(5000);
 	}

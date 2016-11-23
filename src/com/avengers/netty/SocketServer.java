@@ -16,7 +16,7 @@ import com.avengers.netty.core.service.IClusterService;
 import com.avengers.netty.core.service.RoomManager;
 import com.avengers.netty.core.service.UserManager;
 import com.avengers.netty.core.util.AppConfig;
-import com.avengers.netty.core.util.Tracer;
+import com.avengers.netty.core.util.CoreTracer;
 import com.avengers.netty.gamelib.key.NetworkConstant;
 import com.avengers.netty.socket.codec.MessageDecoder;
 import com.avengers.netty.socket.codec.MessageEncoder;
@@ -76,9 +76,10 @@ public class SocketServer {
 	}
 
 	private void start() throws InterruptedException {
-		Tracer.info(SocketServer.class, "================================================ ");
-		Tracer.info(SocketServer.class, "|              PREPARE XYZ SERVER               |");
-		Tracer.info(SocketServer.class, "================================================ ");
+		System.setProperty("log4j.configurationFile", "configs/log4j2.xml");
+		CoreTracer.info(this.getClass(), "================================================ ");
+		CoreTracer.info(this.getClass(), "|              PREPARE XYZ SERVER               |");
+		CoreTracer.info(this.getClass(), "================================================ ");
 		initServerService();
 		// connection incoming (chứa danh sách đang kết nối)
 		EventLoopGroup bossGroup = new NioEventLoopGroup();
@@ -125,10 +126,11 @@ public class SocketServer {
 				public void operationComplete(ChannelFuture future) throws Exception {
 					if (future.isSuccess()) {
 						SocketAddress localAddress = future.channel().localAddress();
-						Tracer.info(SocketServer.class, "SERVER INFO:" + localAddress.toString());
-						Tracer.info(SocketServer.class, "================= SOCKET SERVER STARTED =================");
+						CoreTracer.info(SocketServer.class, "SERVER INFO:" + localAddress.toString());
+						CoreTracer.info(SocketServer.class,
+								"================= SOCKET SERVER STARTED =================");
 					} else {
-						Tracer.error(SocketServer.class, "Bound attempt failed! ", future.cause().toString());
+						CoreTracer.error(SocketServer.class, "Bound attempt failed! ", future.cause().toString());
 					}
 				}
 			});
@@ -161,10 +163,11 @@ public class SocketServer {
 				public void operationComplete(ChannelFuture future) throws Exception {
 					if (future.isSuccess()) {
 						SocketAddress localAddress = future.channel().localAddress();
-						Tracer.info(SocketServer.class, "SERVER INFO:" + localAddress.toString());
-						Tracer.info(SocketServer.class, "================= WEBSOCKET SERVER STARTED =================");
+						CoreTracer.info(SocketServer.class, "SERVER INFO:" + localAddress.toString());
+						CoreTracer.info(SocketServer.class,
+								"================= WEBSOCKET SERVER STARTED =================");
 					} else {
-						Tracer.error(SocketServer.class, "Bound attempt failed! ", future.cause().toString());
+						CoreTracer.error(SocketServer.class, "Bound attempt failed! ", future.cause().toString());
 					}
 				}
 			});
@@ -199,7 +202,7 @@ public class SocketServer {
 		Message.setIntepreter(
 				new ConstantMessageContentInterpreter(SystemNetworkConstant.class, NetworkConstant.class));
 
-		Tracer.info(SocketServer.class, "==================== Everything Is Completed! =====================");
+		CoreTracer.info(this.getClass(), "==================== Everything Is Completed! =====================");
 	}
 
 	public SystemHandlerManager getSystemHandlerManager() {

@@ -6,13 +6,11 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.avengers.netty.SocketServer;
 import com.avengers.netty.core.api.ICoreAPI;
 import com.avengers.netty.core.exception.CoreRuntimeException;
 import com.avengers.netty.core.om.IRoom;
+import com.avengers.netty.core.util.CoreTracer;
 import com.avengers.netty.socket.gate.IMessage;
 import com.avengers.netty.socket.gate.wood.User;
 
@@ -21,7 +19,6 @@ import com.avengers.netty.socket.gate.wood.User;
  *
  */
 public abstract class BaseExtension implements ICRAExtension {
-	private static final Logger LOG = LoggerFactory.getLogger(BaseExtension.class);
 	private String name;
 	private String fileName;
 	private String configFileName;
@@ -207,10 +204,6 @@ public abstract class BaseExtension implements ICRAExtension {
 				new Object[] { this.name, this.type, this.level, this.currentRoom == null ? "{}" : this.currentRoom });
 	}
 
-	public Logger getLogger() {
-		return LOG;
-	}
-
 	protected void removeEventsForListener() {
 		// this.sfs.getExtensionManager().removeListenerFromRoom(listener,
 		// this.parentRoom);
@@ -235,14 +228,10 @@ public abstract class BaseExtension implements ICRAExtension {
 				lagValue += sign * random.nextInt(lagOscillation);
 			}
 
-			if (LOG.isDebugEnabled()) {
-				LOG.debug("Lag simulation, sleeping for: " + lagValue + "ms.");
-			}
-
-			LOG.debug("Lag: " + lagValue);
+			CoreTracer.debug(this.getClass(), "Lag simulation, sleeping for: " + lagValue + "ms.");
 			Thread.sleep(lagValue);
 		} catch (InterruptedException e) {
-			LOG.warn("Interruption during lag simulation: " + e);
+			CoreTracer.warn(this.getClass(), "Interruption during lag simulation: " + e);
 		}
 	}
 }

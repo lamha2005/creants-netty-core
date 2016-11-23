@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import com.avengers.netty.core.queue.constant.QueueConfig;
 import com.avengers.netty.core.queue.constant.QueueLogKey;
-import com.avengers.netty.core.util.Tracer;
+import com.avengers.netty.core.util.CoreTracer;
 import com.google.common.base.Splitter;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.rabbitmq.client.AMQP;
@@ -68,7 +68,7 @@ public class RabitQueueService {
 			conn.addShutdownListener(new ShutdownListener() {
 				@Override
 				public void shutdownCompleted(ShutdownSignalException paramShutdownSignalException) {
-					Tracer.error(RabitQueueService.class, "- RabbitMQ Service shutdown complete",
+					CoreTracer.error(RabitQueueService.class, "- RabbitMQ Service shutdown complete",
 							paramShutdownSignalException);
 				}
 			});
@@ -94,13 +94,13 @@ public class RabitQueueService {
 			channel.queueBind(boardQueue, QueueLogKey.BOARD_EXCHANGE, QueueLogKey.UserBoard);
 
 		} catch (Exception e) {
-			Tracer.error(RabitQueueService.class, e);
+			CoreTracer.error(RabitQueueService.class, e);
 		}
 
 		AMQP.BasicProperties.Builder builder = new AMQP.BasicProperties.Builder();
 		basicProp = builder.deliveryMode(2).build();
 
-		Tracer.info(RabitQueueService.class,
+		CoreTracer.info(RabitQueueService.class,
 				"Init Rabbit MQ Service done, connected to: " + conn.getAddress() + ":" + conn.getPort());
 	}
 
@@ -129,7 +129,7 @@ public class RabitQueueService {
 			increaseSentMessage(routingKey);
 		} catch (Exception ex) {
 			backupDataToFile(routingKey, dataLogs);
-			Tracer.error(RabitQueueService.class, ex);
+			CoreTracer.error(RabitQueueService.class, ex);
 		}
 
 	}
@@ -152,9 +152,9 @@ public class RabitQueueService {
 			if (conn != null && conn.isOpen()) {
 				conn.close();
 			}
-			Tracer.info(RabitQueueService.class, "------------ RabbitMQ Service stopped-------------");
+			CoreTracer.info(RabitQueueService.class, "------------ RabbitMQ Service stopped-------------");
 		} catch (Exception e) {
-			Tracer.error(RabitQueueService.class, "Shutdown fail!", e);
+			CoreTracer.error(RabitQueueService.class, "Shutdown fail!", e);
 		}
 	}
 
@@ -181,9 +181,9 @@ public class RabitQueueService {
 
 			counter.clear();
 
-			Tracer.info(RabitQueueService.class, builder.toString());
+			CoreTracer.info(RabitQueueService.class, builder.toString());
 		} catch (Exception ex) {
-			Tracer.error(RabitQueueService.class, "dumpCounter fail!", ex);
+			CoreTracer.error(RabitQueueService.class, "dumpCounter fail!", ex);
 		}
 	}
 

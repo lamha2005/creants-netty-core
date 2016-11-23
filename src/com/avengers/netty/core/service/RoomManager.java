@@ -29,10 +29,10 @@ import com.avengers.netty.core.om.Room;
 import com.avengers.netty.core.om.RoomPage;
 import com.avengers.netty.core.om.RoomSettings;
 import com.avengers.netty.core.om.cluster.ClusterRoom;
+import com.avengers.netty.core.util.CoreTracer;
 import com.avengers.netty.core.util.DefaultPlayerIdGenerator;
 import com.avengers.netty.core.util.GsonUtils;
 import com.avengers.netty.core.util.IPlayerIdGenerator;
-import com.avengers.netty.core.util.Tracer;
 import com.avengers.netty.socket.gate.wood.User;
 
 /**
@@ -110,14 +110,14 @@ public final class RoomManager implements IRoomManager {
 			try {
 				createRoomExtension(newRoom, extension);
 			} catch (CoreExtensionException e) {
-				Tracer.warn(RoomManager.class, "Failure while creating room extension!", e);
+				CoreTracer.warn(RoomManager.class, "Failure while creating room extension!", e);
 			}
 		}
 		if (newRoom.isGame()) {
 			gameRoomCounter.incrementAndGet();
 		}
 
-		Tracer.info(RoomManager.class, String.format("Room created:  %s", new Object[] { newRoom.toString() }));
+		CoreTracer.info(RoomManager.class, String.format("Room created:  %s", new Object[] { newRoom.toString() }));
 		return newRoom;
 	}
 
@@ -238,7 +238,7 @@ public final class RoomManager implements IRoomManager {
 	public void removeRoom(int roomId) {
 		IRoom room = roomsById.get(Integer.valueOf(roomId));
 		if (room == null) {
-			Tracer.warn(RoomManager.class, "Can't remove requested room. ID = " + roomId + ". Room was not found.");
+			CoreTracer.warn(RoomManager.class, "Can't remove requested room. ID = " + roomId + ". Room was not found.");
 		} else {
 			removeRoom(room);
 			clusterService.removeRoom(ClusterRoom.getClusterRoomId(room));
@@ -248,7 +248,7 @@ public final class RoomManager implements IRoomManager {
 	public void removeRoom(String name) {
 		IRoom room = roomsByName.get(name);
 		if (room == null) {
-			Tracer.warn(RoomManager.class, "Can't remove requested room. Name = " + name + ". Room was not found.");
+			CoreTracer.warn(RoomManager.class, "Can't remove requested room. Name = " + name + ". Room was not found.");
 		} else {
 			removeRoom(room);
 		}
@@ -256,7 +256,7 @@ public final class RoomManager implements IRoomManager {
 
 	public void removeRoom(IRoom room) {
 		if (!room.isGame()) {
-			Tracer.error(RoomManager.class, "[WARN] removeRoom faile! Can not remove lobby!");
+			CoreTracer.error(RoomManager.class, "[WARN] removeRoom faile! Can not remove lobby!");
 			return;
 		}
 
@@ -267,7 +267,7 @@ public final class RoomManager implements IRoomManager {
 				socketServer.getExtensionManager().destroyExtension(roomExtension);
 			}
 		} finally {
-			Tracer.debug(RoomManager.class, "[DEBUG] DESTROY ROOM ************** active status:" + room.isActive());
+			CoreTracer.debug(RoomManager.class, "[DEBUG] DESTROY ROOM ************** active status:" + room.isActive());
 			room.destroy();
 			room.setActive(false);
 
@@ -278,7 +278,7 @@ public final class RoomManager implements IRoomManager {
 				gameRoomCounter.decrementAndGet();
 			}
 
-			Tracer.info(RoomManager.class, String.format("Room removed: %s, Duration: %s",
+			CoreTracer.info(RoomManager.class, String.format("Room removed: %s, Duration: %s",
 					new Object[] { room.toString(), room.getLifeTime() }));
 		}
 	}
@@ -316,7 +316,7 @@ public final class RoomManager implements IRoomManager {
 		try {
 			if (room.containsUser(user)) {
 				room.removeUser(user);
-				Tracer.debug(RoomManager.class,
+				CoreTracer.debug(RoomManager.class,
 						"User: " + user.getUserName() + " removed from Room: " + room.getName());
 			} else {
 				throw new CoreRuntimeException("Can't remove user: " + user + ", from: " + room);
@@ -418,7 +418,7 @@ public final class RoomManager implements IRoomManager {
 			}
 		}
 
-		Tracer.info(RoomManager.class, "remove room: " + room.getName() + " from it's group: " + room.getGroupId());
+		CoreTracer.info(RoomManager.class, "remove room: " + room.getName() + " from it's group: " + room.getGroupId());
 	}
 
 	private void validateRoomName(String roomName) throws RoomException {

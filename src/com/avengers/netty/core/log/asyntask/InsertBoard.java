@@ -9,7 +9,7 @@ import com.avengers.netty.core.dao.ConnPool;
 import com.avengers.netty.core.log.BoardLog;
 import com.avengers.netty.core.queue.RabitQueueService;
 import com.avengers.netty.core.queue.constant.QueueLogKey;
-import com.avengers.netty.core.util.Tracer;
+import com.avengers.netty.core.util.CoreTracer;
 
 /**
  * @author LamHa
@@ -54,11 +54,11 @@ public class InsertBoard extends BaseDatabase implements Runnable {
 				RabitQueueService.getInstance().sendLog(QueueLogKey.BOARD_EXCHANGE, QueueLogKey.UserBoard, true,
 						data.toString());
 			} else {
-				Tracer.warn(InsertBoard.class, "Board info is not valid: " + board.toString());
+				CoreTracer.warn(InsertBoard.class, "Board info is not valid: " + board.toString());
 			}
 
 		} catch (Exception e) {
-			Tracer.error(InsertBoard.class, "run fail!", e);
+			CoreTracer.error(InsertBoard.class, "run fail!", e);
 		} finally {
 			closePreparedStatement(statement);
 			free(conn);

@@ -6,7 +6,7 @@ import com.avengers.netty.core.event.SystemNetworkConstant;
 import com.avengers.netty.core.event.handler.AbstractRequestHandler;
 import com.avengers.netty.core.exception.JoinRoomException;
 import com.avengers.netty.core.om.IRoom;
-import com.avengers.netty.core.util.Tracer;
+import com.avengers.netty.core.util.CoreTracer;
 import com.avengers.netty.gamelib.eventhandler.JoinRoomExtensionHandler;
 import com.avengers.netty.gamelib.key.ErrorCode;
 import com.avengers.netty.socket.gate.IMessage;
@@ -42,7 +42,7 @@ public class JoinRoomRequestHandler extends AbstractRequestHandler {
 		if (room == null) {
 			writeErrorMessage(user, SystemNetworkConstant.COMMAND_USER_JOIN_ROOM, ErrorCode.ROOM_NOT_FOUND,
 					"Không tìm thấy room này");
-			Tracer.errorRoom(JoinRoomExtensionHandler.class, String.format(
+			CoreTracer.error(JoinRoomExtensionHandler.class, String.format(
 					"[DEBUG] [user:%s] request join room [%d] fail! Not exist this room.", user.getUserName(), roomId));
 			return;
 		}
@@ -57,7 +57,7 @@ public class JoinRoomRequestHandler extends AbstractRequestHandler {
 		try {
 			coreApi.joinRoom(user, roomId, false, null);
 		} catch (JoinRoomException e) {
-			Tracer.errorRoom(JoinRoomExtensionHandler.class, String.format(
+			CoreTracer.error(JoinRoomExtensionHandler.class, String.format(
 					"[DEBUG] [user:%s] request join room [%s] fail! %s", user.getUserName(), room.getName(), e));
 		}
 	}

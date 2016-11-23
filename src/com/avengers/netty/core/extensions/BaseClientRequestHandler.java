@@ -2,8 +2,6 @@ package com.avengers.netty.core.extensions;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-
 import com.avengers.netty.core.api.ICoreAPI;
 import com.avengers.netty.socket.gate.IMessage;
 import com.avengers.netty.socket.gate.wood.User;
@@ -39,9 +37,5 @@ public abstract class BaseClientRequestHandler implements IClientRequestHandler 
 
 	protected void send(IMessage message, List<User> recipients) {
 		parentExtension.send(message, recipients);
-	}
-
-	protected Logger getLogger() {
-		return parentExtension.getLogger();
 	}
 }

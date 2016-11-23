@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.avengers.netty.core.event.SystemNetworkConstant;
 import com.avengers.netty.core.extensions.CoreExtension;
-import com.avengers.netty.core.util.Tracer;
+import com.avengers.netty.core.util.CoreTracer;
 import com.avengers.netty.gamelib.eventhandler.ChatRoomRequestHandler;
 import com.avengers.netty.gamelib.eventhandler.ConfirmInviteRequestHandler;
 import com.avengers.netty.gamelib.eventhandler.CreateRoomRequestHandler;
@@ -43,7 +43,7 @@ public abstract class GameExtension extends CoreExtension {
 
 	@Override
 	public void init() {
-		Tracer.info(GameExtension.class, "[INFO] init GameLib Extension");
+		CoreTracer.info(GameExtension.class, "[INFO] init GameLib Extension");
 		gameController = new GameController(getCurrentRoom(), initInterface());
 		addEventHandler();
 	}
@@ -51,7 +51,7 @@ public abstract class GameExtension extends CoreExtension {
 	private void addEventHandler() {
 		// FIXME hiện tại chỗ này chưa đúng, mỗi game chỉ có 1 extension này
 		// thôi
-		Tracer.info(GameExtension.class, "[INFO] Init Default Event In Game");
+		CoreTracer.info(GameExtension.class, "[INFO] Init Default Event In Game");
 		addEventHandler(SystemNetworkConstant.COMMAND_USER_LOGIN, LoginExtensionHandler.class);
 		addEventHandler(SystemNetworkConstant.COMMAND_USER_JOIN_ROOM, JoinRoomExtensionHandler.class);
 		addEventHandler(SystemNetworkConstant.COMMAND_USER_LEAVE_ROOM, UserLeaveRoomExtensionHandler.class);

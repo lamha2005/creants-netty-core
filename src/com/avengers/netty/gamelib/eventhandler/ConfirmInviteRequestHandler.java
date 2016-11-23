@@ -3,8 +3,8 @@ package com.avengers.netty.gamelib.eventhandler;
 import com.avengers.netty.core.event.SystemNetworkConstant;
 import com.avengers.netty.core.exception.JoinRoomException;
 import com.avengers.netty.core.extensions.BaseClientRequestHandler;
+import com.avengers.netty.core.util.CoreTracer;
 import com.avengers.netty.core.util.DefaultMessageFactory;
-import com.avengers.netty.core.util.Tracer;
 import com.avengers.netty.gamelib.key.ErrorCode;
 import com.avengers.netty.gamelib.key.NetworkConstant;
 import com.avengers.netty.socket.gate.IMessage;
@@ -33,7 +33,7 @@ public class ConfirmInviteRequestHandler extends BaseClientRequestHandler {
 		try {
 			getApi().joinRoom(user, roomId, false, null);
 		} catch (JoinRoomException e) {
-			Tracer.errorRoom(JoinRoomExtensionHandler.class,
+			CoreTracer.error(this.getClass(),
 					String.format("[DEBUG] [user:%s] request confirm invite join room [%s] fail! %s",
 							user.getUserName(), "confirm invite error", e));
 		}

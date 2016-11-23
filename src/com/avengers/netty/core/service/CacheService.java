@@ -4,10 +4,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.avengers.netty.core.util.AppConfig;
+import com.avengers.netty.core.util.CoreTracer;
 import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.Cluster;
 import com.couchbase.client.java.CouchbaseCluster;
@@ -23,7 +21,6 @@ import rx.functions.Func1;
  *
  */
 public class CacheService {
-	private static final Logger LOG = LoggerFactory.getLogger(CacheService.class);
 	private Cluster cluster;
 	private Bucket bucket;
 
@@ -39,7 +36,7 @@ public class CacheService {
 
 	private CacheService() {
 		try {
-			LOG.info("---------------------- INIT COUCHBASE --------------------");
+			CoreTracer.info(this.getClass(), "---------------------- INIT COUCHBASE --------------------");
 			CouchbaseEnvironment env = DefaultCouchbaseEnvironment.builder()
 					.connectTimeout((int) TimeUnit.SECONDS.toMillis(45)).kvTimeout(TimeUnit.SECONDS.toMillis(60))
 					.computationPoolSize(3).ioPoolSize(3).build();
@@ -47,16 +44,16 @@ public class CacheService {
 			cluster = CouchbaseCluster.create(env, AppConfig.cacheHosts);
 			bucket = cluster.openBucket(AppConfig.bucketName, AppConfig.cachePassword);
 			if (bucket == null) {
-				LOG.error("[ERROR] Cache service can't get bucket");
+				CoreTracer.error(this.getClass(), "[ERROR] Cache service can't get bucket");
 			}
 
-			LOG.info("::::::::::::::::::::::::::::::::::::::::::::::::::::");
-			LOG.info(">> COUCHBASE STARTED");
-			LOG.info(String.format(">> [cacheHosts=%s, bucketName=%s]", AppConfig.cacheHosts.toString(),
-					AppConfig.bucketName));
-			LOG.info("::::::::::::::::::::::::::::::::::::::::::::::::::::");
+			CoreTracer.info(this.getClass(), "::::::::::::::::::::::::::::::::::::::::::::::::::::");
+			CoreTracer.info(this.getClass(), ">> COUCHBASE STARTED");
+			CoreTracer.info(this.getClass(), String.format(">> [cacheHosts=%s, bucketName=%s]",
+					AppConfig.cacheHosts.toString(), AppConfig.bucketName));
+			CoreTracer.info(this.getClass(), "::::::::::::::::::::::::::::::::::::::::::::::::::::");
 		} catch (Exception e) {
-			LOG.error(e.getMessage(), e);
+			CoreTracer.error(this.getClass(), e.getMessage(), e);
 		}
 
 	}
@@ -92,7 +89,7 @@ public class CacheService {
 	}
 
 	public void shutdown() {
-		LOG.info("Destroy extension - Shutdown Couchbase");
+		CoreTracer.info(this.getClass(), "Destroy extension - Shutdown Couchbase");
 		if (cluster != null) {
 			bucket.close();
 			cluster.disconnect();

@@ -16,7 +16,7 @@ import com.avengers.netty.core.om.CreateRoomSettings;
 import com.avengers.netty.core.om.CreateRoomSettings.RoomExtensionSettings;
 import com.avengers.netty.core.om.GameSettings;
 import com.avengers.netty.core.om.IRoom;
-import com.avengers.netty.core.util.Tracer;
+import com.avengers.netty.core.util.CoreTracer;
 import com.avengers.netty.gamelib.key.NetworkConstant;
 import com.avengers.netty.gamelib.om.RoomInfo;
 import com.thoughtworks.xstream.XStream;
@@ -51,7 +51,7 @@ public class GameManager {
 
 	private synchronized void initializeGames() {
 		try {
-			Tracer.info(GameManager.class, "- Initialize rooms from config");
+			CoreTracer.info(GameManager.class, "- Initialize rooms from config");
 			IRoom room;
 			// RoomInfo roomInfo;
 			// CreateRoomSettings roomSetting;
@@ -88,7 +88,7 @@ public class GameManager {
 				addGameSettings(settings);
 			}
 		} catch (CoreException e) {
-			Tracer.error(GameManager.class, "Init games fail!", e);
+			CoreTracer.error(GameManager.class, "Init games fail!", e);
 		}
 	}
 
@@ -101,7 +101,7 @@ public class GameManager {
 		for (File file : zoneDefinitionFiles) {
 			try {
 				FileInputStream inStream = new FileInputStream(file);
-				Tracer.info(GameManager.class, "Loading", file.toString());
+				CoreTracer.info(GameManager.class, "Loading", file.toString());
 				gameSettings.add((GameSettings) getZonesXStreamDefinitions().fromXML(inStream));
 			} catch (FileNotFoundException e) {
 				throw new CoreRuntimeException("Could not locate Zone definition file: " + file.getAbsolutePath());
@@ -157,7 +157,7 @@ public class GameManager {
 	public void addLobbyGame(byte gameId, IRoom room) {
 		if (lobbyMap.containsKey(gameId)) {
 			// config có nhiều hơn 1 lobby
-			Tracer.error(GameManager.class, "Lobby already existed, gameId: " + gameId);
+			CoreTracer.error(GameManager.class, "Lobby already existed, gameId: " + gameId);
 		} else {
 			lobbyMap.put(Byte.valueOf(gameId), room);
 		}

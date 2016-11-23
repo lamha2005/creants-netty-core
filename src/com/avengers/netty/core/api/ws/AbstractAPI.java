@@ -6,12 +6,8 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.avengers.netty.core.om.ServerConfig;
-import com.avengers.netty.core.util.Tracer;
-import com.google.gson.Gson;
+import com.avengers.netty.core.util.CoreTracer;
 
 /**
  * @author LamHa
@@ -19,13 +15,8 @@ import com.google.gson.Gson;
  */
 public abstract class AbstractAPI {
 
-	protected Logger logger = LoggerFactory.getLogger("API");
-	protected static final Gson gson = new Gson();
-
 	public String request(ApiParam... params) {
-
 		String urlRequest = getUrl();
-
 		long processingTime = System.currentTimeMillis();
 		BufferedReader in = null;
 		StringBuilder responseString = new StringBuilder();
@@ -60,13 +51,13 @@ public abstract class AbstractAPI {
 				}
 
 			} catch (Exception ex) {
-				logger.error("API Error reading URL content: ", ex);
+				CoreTracer.error(this.getClass(), "API Error reading URL content: ", ex);
 			} finally {
 				if (in != null) {
 					try {
 						in.close();
 					} catch (IOException ex) {
-						logger.error("close exception", ex);
+						CoreTracer.error(this.getClass(), "close exception", ex);
 					}
 				}
 			}
@@ -75,11 +66,12 @@ public abstract class AbstractAPI {
 		processingTime = System.currentTimeMillis() - processingTime;
 		// Slow log
 		if (processingTime > ServerConfig.SLOW_PROCESS_MSG_TIME) {
-			Tracer.debug(AbstractAPI.class, 0, processingTime, this.getClass().getName(), urlParams.toString());
+			CoreTracer.debug(AbstractAPI.class, 0, processingTime, this.getClass().getName(), urlParams.toString());
 			// Reporter.logSlowedProcessCommand(0, processingTime,
 			// this.getClass().getName(), urlParams.toString());
 		}
-		logger.debug(urlParams.append(" ").append(responseString).append(" ").append(processingTime).toString());
+		CoreTracer.debug(this.getClass(),
+				urlParams.append(" ").append(responseString).append(" ").append(processingTime).toString());
 
 		return responseString.toString();
 	}

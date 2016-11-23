@@ -2,7 +2,7 @@ package com.avengers.netty.gamelib.eventhandler;
 
 import com.avengers.netty.core.event.SystemNetworkConstant;
 import com.avengers.netty.core.extensions.BaseClientRequestHandler;
-import com.avengers.netty.core.util.Tracer;
+import com.avengers.netty.core.util.CoreTracer;
 import com.avengers.netty.gamelib.GameController;
 import com.avengers.netty.gamelib.GameExtension;
 import com.avengers.netty.socket.gate.IMessage;
@@ -23,7 +23,7 @@ public class GameTestRequestHandler extends BaseClientRequestHandler {
 
 	@Override
 	public void handleClientRequest(User user, IMessage message) {
-		Tracer.debug(GameTestRequestHandler.class,
+		CoreTracer.debug(this.getClass(),
 				"[DEBUG] test game data: " + message.getString(SystemNetworkConstant.KEYS_JSON_DATA));
 
 		GameExtension gameExt = (GameExtension) getParentExtension();

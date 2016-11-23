@@ -11,7 +11,7 @@ import java.util.Iterator;
 import org.slf4j.LoggerFactory;
 
 import com.avengers.netty.core.om.ServerConfig;
-import com.avengers.netty.core.util.Tracer;
+import com.avengers.netty.core.util.CoreTracer;
 import com.avengers.netty.socket.gate.wood.User;
 import com.avengers.netty.socket.util.LoggerNames;
 
@@ -62,7 +62,7 @@ public class DataManager {
 				}
 			}
 		} catch (Exception e) {
-			Tracer.error(DataManager.class, "error when dump DB counter log", e);
+			CoreTracer.error(DataManager.class, "error when dump DB counter log", e);
 		}
 		return dump.toString();
 	}
@@ -70,7 +70,7 @@ public class DataManager {
 	public static void logDbCounter() {
 		try {
 			instance.countDbLog("logDbCounter");
-			Tracer.info(DataManager.class, dumpDbCounterLog());
+			CoreTracer.info(DataManager.class, dumpDbCounterLog());
 			synchronized (instance.dbCounter) {
 				instance.dbCounter.clear();
 				Method[] methods = DataManager.class.getDeclaredMethods();

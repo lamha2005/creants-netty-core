@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <jardesc>
     <jar path="creants-pluto/lib/game-lib.jar"/>
-    <options buildIfNeeded="true" compress="true" descriptionLocation="/netty-core/desc/game-lib.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/creants-core/desc/game-lib.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
     <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
     <selectedProjects/>
     <manifest generateManifest="true" manifestLocation="" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
@@ -11,11 +11,11 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
-        <javaElement handleIdentifier="=netty-core/src&lt;com.avengers.netty.gamelib.result"/>
-        <javaElement handleIdentifier="=netty-core/src&lt;com.avengers.netty.gamelib.om"/>
-        <javaElement handleIdentifier="=netty-core/src&lt;com.avengers.netty.gamelib.eventhandler"/>
-        <javaElement handleIdentifier="=netty-core/src&lt;com.avengers.netty.gamelib"/>
-        <javaElement handleIdentifier="=netty-core/src&lt;com.avengers.netty.gamelib.key"/>
-        <javaElement handleIdentifier="=netty-core/src&lt;com.avengers.netty.gamelib.scheduler"/>
+        <javaElement handleIdentifier="=creants-core/src&lt;com.avengers.netty.gamelib.key"/>
+        <javaElement handleIdentifier="=creants-core/src&lt;com.avengers.netty.gamelib.scheduler"/>
+        <javaElement handleIdentifier="=creants-core/src&lt;com.avengers.netty.gamelib.eventhandler"/>
+        <javaElement handleIdentifier="=creants-core/src&lt;com.avengers.netty.gamelib.result"/>
+        <javaElement handleIdentifier="=creants-core/src&lt;com.avengers.netty.gamelib"/>
+        <javaElement handleIdentifier="=creants-core/src&lt;com.avengers.netty.gamelib.om"/>
     </selectedElements>
 </jardesc>

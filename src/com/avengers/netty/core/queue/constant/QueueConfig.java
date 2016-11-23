@@ -2,7 +2,7 @@ package com.avengers.netty.core.queue.constant;
 
 import java.util.Properties;
 
-import com.avengers.netty.core.util.Tracer;
+import com.avengers.netty.core.util.CoreTracer;
 
 /**
  * @author LamHa
@@ -30,7 +30,7 @@ public class QueueConfig {
 
 		props.clear();
 
-		Tracer.info(QueueConfig.class, new StringBuilder("RabbitMQ Service config: ").append(host).append(", port:")
+		CoreTracer.info(QueueConfig.class, new StringBuilder("RabbitMQ Service config: ").append(host).append(", port:")
 				.append(port).append(", user:").append(username).append(", pass:").append(pass).toString());
 	}
 
