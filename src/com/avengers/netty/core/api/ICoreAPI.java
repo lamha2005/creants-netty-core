@@ -57,10 +57,11 @@ public abstract interface ICoreAPI {
 
 	abstract void joinRoom(User user, IRoom roomToJoin) throws JoinRoomException;
 
-	abstract void joinRoom(User user, IRoom roomToJoin, boolean joinAsSpectator, String password)
+	abstract void joinRoom(User user, IRoom roomToJoin, boolean joinAsSpectator, String password, boolean fireToExtension)
 			throws JoinRoomException;
 
-	abstract void joinRoom(User user, int roomId, boolean joinAsSpectator, String password) throws JoinRoomException;
+	abstract void joinRoom(User user, int roomId, boolean joinAsSpectator, String password)
+			throws JoinRoomException;
 
 	abstract void leaveRoom(User user, IRoom roomToLeave);
 

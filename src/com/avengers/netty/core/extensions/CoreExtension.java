@@ -80,6 +80,7 @@ public abstract class CoreExtension extends BaseExtension {
 			handler.handleClientRequest(sender, message);
 		} catch (Exception err) {
 			CoreTracer.warn(this.getClass(), "Cannot instantiate handler class:", err);
+			err.printStackTrace();
 		}
 	}
 
@@ -95,6 +96,7 @@ public abstract class CoreExtension extends BaseExtension {
 			handler.handleServerEvent(event);
 		} catch (Exception err) {
 			CoreTracer.warn(this.getClass(), "Cannot instantiate handler class:", err);
+			err.printStackTrace();
 		}
 	}
 

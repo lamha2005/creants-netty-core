@@ -47,7 +47,7 @@ public class PlayNowRequestHandler extends BaseClientRequestHandler {
 
 		CoreTracer.debug(this.getClass(), "Find room:" + room.getName());
 		try {
-			getParentExtension().getApi().joinRoom(user, room, false, null);
+			getParentExtension().getApi().joinRoom(user, room, false, null, true);
 		} catch (JoinRoomException e) {
 			send(DefaultMessageFactory.createErrorMessage(NetworkConstant.COMMAND_AUTO_JOIN_ROOM,
 					ErrorCode.ROOM_NOT_FOUND, "Không tìm thấy room này trên hệ thống"), user);

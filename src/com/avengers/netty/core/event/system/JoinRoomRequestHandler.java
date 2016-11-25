@@ -55,7 +55,7 @@ public class JoinRoomRequestHandler extends AbstractRequestHandler {
 		}
 
 		try {
-			coreApi.joinRoom(user, roomId, false, null);
+			coreApi.joinRoom(user, room, false, null, true);
 		} catch (JoinRoomException e) {
 			CoreTracer.error(JoinRoomExtensionHandler.class, String.format(
 					"[DEBUG] [user:%s] request join room [%s] fail! %s", user.getUserName(), room.getName(), e));

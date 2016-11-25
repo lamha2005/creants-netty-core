@@ -55,7 +55,7 @@ public class AutoJoinRoomRequestHandler extends BaseClientRequestHandler {
 		// trường hợp local còn phòng trống
 		if (room != null) {
 			try {
-				getParentExtension().getApi().joinRoom(user, room, true, "");
+				getParentExtension().getApi().joinRoom(user, room, true, "", true);
 			} catch (JoinRoomException e) {
 				CoreTracer.error(AutoJoinRoomRequestHandler.class, "[ERROR] handleClientRequest fail!", e);
 			}

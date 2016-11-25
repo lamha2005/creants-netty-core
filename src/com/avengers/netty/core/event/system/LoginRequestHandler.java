@@ -1,15 +1,11 @@
 package com.avengers.netty.core.event.system;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.avengers.netty.core.event.SystemNetworkConstant;
 import com.avengers.netty.core.event.handler.AbstractRequestHandler;
-import com.avengers.netty.core.util.DefaultMessageFactory;
+import com.avengers.netty.core.util.CoreTracer;
 import com.avengers.netty.gamelib.key.ErrorCode;
 import com.avengers.netty.gamelib.service.WebService;
 import com.avengers.netty.socket.gate.IMessage;
-import com.avengers.netty.socket.gate.wood.Message;
 import com.avengers.netty.socket.gate.wood.User;
 import com.couchbase.client.java.document.json.JsonObject;
 
@@ -18,7 +14,6 @@ import com.couchbase.client.java.document.json.JsonObject;
  *
  */
 public class LoginRequestHandler extends AbstractRequestHandler {
-	private static final Logger LOG = LoggerFactory.getLogger(LoginRequestHandler.class);
 
 	@Override
 	public void initialize() {
@@ -26,22 +21,20 @@ public class LoginRequestHandler extends AbstractRequestHandler {
 
 	@Override
 	public void perform(User user, IMessage message) {
-		// TODO move to custom
-		String token = message.getString(SystemNetworkConstant.KEYS_TOKEN);
-		Message response = DefaultMessageFactory.createMessage(SystemNetworkConstant.COMMAND_USER_LOGIN);
-
 		try {
+			// TODO move to custom
+			String token = message.getString(SystemNetworkConstant.KEYS_TOKEN);
 			String verifyInfo = WebService.getInstance().verify(token, "12345");
 			JsonObject jo = JsonObject.fromJson(verifyInfo);
 			Integer code = jo.getInt("code");
-			if (code != 1) {
-				LOG.debug("[DEBUG] session is expired!");
+			if (code != 1) { 
+				CoreTracer.debug(this.getClass(),"[DEBUG] session is expired!");
 				writeErrorMessage(user, SystemNetworkConstant.COMMAND_USER_LOGIN, ErrorCode.SESSION_EXPIRED,
 						"Session đã hết hạn");
 				return;
 			}
 
-			LOG.debug("[DEBUG] " + verifyInfo);
+			CoreTracer.debug(this.getClass(), "[DEBUG] " + verifyInfo);
 			// String encryptMD5 = Security.encryptMD5(token);
 			// String userInfo = cacheServce.get(encryptMD5);
 			// if (userInfo == null) {
@@ -73,12 +66,7 @@ public class LoginRequestHandler extends AbstractRequestHandler {
 			user.setAvatar(userObj.getString("avatar"));
 			user.setUid(uid);
 			user.setName(uid);
-			response.putInt(SystemNetworkConstant.KEYI_USER_ID, user.getCreantUserId());
-			response.putString(SystemNetworkConstant.KEYS_USERNAME, user.getUserName());
-			response.putLong(SystemNetworkConstant.KEYL_MONEY, user.getMoney());
-			response.putString(SystemNetworkConstant.KEYS_AVATAR, user.getAvatar());
 			coreApi.login(user);
-			writeMessage(user, response);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

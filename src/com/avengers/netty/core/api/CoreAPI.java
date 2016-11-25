@@ -130,7 +130,7 @@ public class CoreAPI implements ICoreAPI {
 		// join sau khi taọ
 		if (newRoom != null && owner != null && joinAfterCreated) {
 			try {
-				joinRoom(owner, newRoom, false, newRoom.getPassword());
+				joinRoom(owner, newRoom, false, newRoom.getPassword(), true);
 			} catch (JoinRoomException e) {
 				CoreTracer.error(CoreAPI.class,
 						"Unable to join the just created Room: " + newRoom + ", reason: " + e.getMessage());
@@ -155,16 +155,16 @@ public class CoreAPI implements ICoreAPI {
 
 	@Override
 	public void joinRoom(User user, IRoom roomToJoin) throws JoinRoomException {
-		joinRoom(user, roomToJoin, true, "");
+		joinRoom(user, roomToJoin, true, "", true);
 	}
 
 	@Override
 	public void joinRoom(User user, int roomId, boolean joinAsSpectator, String password) throws JoinRoomException {
-		joinRoom(user, roomService.getRoomById(roomId), joinAsSpectator, password);
+		joinRoom(user, roomService.getRoomById(roomId), joinAsSpectator, password, true);
 	}
 
 	@Override
-	public void joinRoom(User user, IRoom roomToJoin, boolean joinAsSpectator, String password)
+	public void joinRoom(User user, IRoom roomToJoin, boolean joinAsSpectator, String password, boolean fireToExtension)
 			throws JoinRoomException {
 		try {
 			// Đang thực hiện join tới phòng khác
@@ -222,12 +222,15 @@ public class CoreAPI implements ICoreAPI {
 					user.getUserName(), roomToJoin.getName()));
 
 			// fireEvent cho extension xu ly tiep
-			Map<ICoreEventParam, Object> params = new HashMap<ICoreEventParam, Object>();
-			params.put(CoreEventParam.USER, user);
-			params.put(CoreEventParam.ROOM, roomToJoin);
-			CoreEvent event = new CoreEvent(roomToJoin.isGame() ? SystemNetworkConstant.COMMAND_USER_JOIN_ROOM
-					: SystemNetworkConstant.COMMAND_USER_JOIN_GAME, params);
-			roomToJoin.getExtension().handleServerEvent(event);
+			if (fireToExtension) {
+				Map<ICoreEventParam, Object> params = new HashMap<ICoreEventParam, Object>();
+				params.put(CoreEventParam.USER, user);
+				params.put(CoreEventParam.ROOM, roomToJoin);
+				CoreEvent event = new CoreEvent(roomToJoin.isGame() ? SystemNetworkConstant.COMMAND_USER_JOIN_ROOM
+						: SystemNetworkConstant.COMMAND_USER_JOIN_GAME, params);
+				roomToJoin.getExtension().handleServerEvent(event);
+			}
+
 		} catch (JoinRoomException e) {
 			String message = String.format("Join Error - %s", new Object[] { e.getMessage() });
 			CoreTracer.error(CoreAPI.class, message, e);
@@ -271,7 +274,6 @@ public class CoreAPI implements ICoreAPI {
 			CoreTracer.debug(CoreAPI.class, String.format("[DEBUG] remove room: %s", room.getName()));
 		}
 
-		CacheService.getInstace().freeLastRoom(user.getCreantUserId());
 		user.updateLastRequestTime();
 
 		// fireEvent cho extension xu ly tiep

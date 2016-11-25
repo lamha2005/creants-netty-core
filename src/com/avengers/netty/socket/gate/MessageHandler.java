@@ -96,6 +96,8 @@ public class MessageHandler extends SimpleChannelInboundHandler<Message> {
 					user.setCurrentGameId((byte) 2);
 					IRoom lobby = GameManager.getInstance().getLobbyGame((byte) 2);
 					lobby.getExtension().handleClientRequest(user, message);
+				} else {
+					CoreTracer.error(this.getClass(), "[ERROR] không thấy last room");
 				}
 
 			}

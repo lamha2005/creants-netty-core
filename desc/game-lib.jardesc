@@ -11,11 +11,11 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
-        <javaElement handleIdentifier="=creants-core/src&lt;com.avengers.netty.gamelib.key"/>
         <javaElement handleIdentifier="=creants-core/src&lt;com.avengers.netty.gamelib.scheduler"/>
+        <javaElement handleIdentifier="=creants-core/src&lt;com.avengers.netty.gamelib.key"/>
         <javaElement handleIdentifier="=creants-core/src&lt;com.avengers.netty.gamelib.eventhandler"/>
         <javaElement handleIdentifier="=creants-core/src&lt;com.avengers.netty.gamelib.result"/>
-        <javaElement handleIdentifier="=creants-core/src&lt;com.avengers.netty.gamelib"/>
         <javaElement handleIdentifier="=creants-core/src&lt;com.avengers.netty.gamelib.om"/>
+        <javaElement handleIdentifier="=creants-core/src&lt;com.avengers.netty.gamelib"/>
     </selectedElements>
 </jardesc>

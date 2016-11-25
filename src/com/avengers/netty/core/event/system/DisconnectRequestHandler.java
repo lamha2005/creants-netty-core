@@ -22,7 +22,7 @@ public class DisconnectRequestHandler extends AbstractRequestHandler {
 		// Dispatch sự kiện cho game implement
 		IRoom lastJoinedRoom = user.getLastJoinedRoom();
 		if (lastJoinedRoom != null) {
-			if (lastJoinedRoom.isGame()) {
+			if (lastJoinedRoom.isGame() && lastJoinedRoom.getPlayerSize() > 1) {
 				coreApi.disconnectUser(user, lastJoinedRoom);
 				// TODO xử lý logout
 			} else {
