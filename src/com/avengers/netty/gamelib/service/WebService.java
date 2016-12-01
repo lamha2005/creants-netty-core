@@ -14,6 +14,7 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
  *
  */
 public class WebService {
+	private static final String KEY = "1|WqRVclir6nj4pk3PPxDCzqPTXl3J";
 	private static WebService instance;
 
 	public static WebService getInstance() {
@@ -33,12 +34,34 @@ public class WebService {
 		formData.add("token", token);
 		formData.add("key", key);
 
-		ClientResponse response = webResource.accept(MediaType.TEXT_PLAIN).post(ClientResponse.class, formData);
+		ClientResponse response = webResource.accept(MediaType.TEXT_PLAIN).header("key", KEY).post(ClientResponse.class,
+				formData);
+
 		if (response.getStatus() != 200) {
 			throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
 		}
 
 		return response.getEntity(String.class);
+	}
+
+	public String getUser(String uid, String key) {
+		WebResource webResource = Client.create().resource("http://112.78.15.60:8686/api/" + "user");
+		MultivaluedMap<String, String> formData = new MultivaluedMapImpl();
+		formData.add("uid", uid);
+
+		ClientResponse response = webResource.accept(MediaType.TEXT_PLAIN).header("key", KEY).post(ClientResponse.class,
+				formData);
+
+		if (response.getStatus() != 200) {
+			throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+		}
+
+		return response.getEntity(String.class);
+	}
+
+	public static void main(String[] args) {
+		String user = WebService.getInstance().getUser("WqRVclir6nj4pk3PPxCczqPTXl3J", "2000");
+		System.out.println(user.toString());
 	}
 
 }
