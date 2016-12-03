@@ -45,7 +45,7 @@ public class WebService {
 	}
 
 	public String getUser(String uid, String key) {
-		WebResource webResource = Client.create().resource("http://112.78.15.60:8686/api/" + "user");
+		WebResource webResource = Client.create().resource(AppConfig.graphApi + "user");
 		MultivaluedMap<String, String> formData = new MultivaluedMapImpl();
 		formData.add("uid", uid);
 
