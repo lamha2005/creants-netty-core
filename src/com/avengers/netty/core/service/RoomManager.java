@@ -267,7 +267,6 @@ public final class RoomManager implements IRoomManager {
 				socketServer.getExtensionManager().destroyExtension(roomExtension);
 			}
 		} finally {
-			CoreTracer.debug(RoomManager.class, "[DEBUG] DESTROY ROOM ************** active status:" + room.isActive());
 			room.destroy();
 			room.setActive(false);
 

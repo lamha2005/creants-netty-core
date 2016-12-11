@@ -3,7 +3,6 @@ package com.avengers.netty.core.event.handler;
 import java.util.List;
 
 import com.avengers.netty.core.api.ICoreAPI;
-import com.avengers.netty.core.service.CacheService;
 import com.avengers.netty.core.service.IUserManager;
 import com.avengers.netty.core.service.RoomManager;
 import com.avengers.netty.core.util.DefaultMessageFactory;
@@ -21,11 +20,9 @@ import com.avengers.netty.socket.gate.wood.User;
 public abstract class AbstractRequestHandler implements IRequestHandler {
 	protected IChannelService channelService;
 	private IMessageWriter messageWriter;
-	// protected final DataManager dataManager = DataManager.getInstance();
 	protected ICoreAPI coreApi;
 	protected IUserManager userManager;
 	protected RoomManager roomService;
-	protected static final CacheService cacheServce = CacheService.getInstance();
 
 	public AbstractRequestHandler() {
 		initialize();

@@ -25,6 +25,7 @@ public class UserLeaveRoomExtensionHandler extends BaseServerEventHandler {
 	public void handleServerEvent(ICoreEvent event) {
 		User user = (User) event.getParameter(CoreEventParam.USER);
 		IRoom room = (IRoom) event.getParameter(CoreEventParam.ROOM);
+		System.out.println("[ERROR]---------------- leave room" + room.getPlayersList() );
 
 		GameExtension gameExtension = (GameExtension) room.getExtension();
 		gameExtension.getApi().sendExtensionResponse(

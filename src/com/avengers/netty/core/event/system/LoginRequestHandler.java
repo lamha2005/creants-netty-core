@@ -27,8 +27,8 @@ public class LoginRequestHandler extends AbstractRequestHandler {
 			String verifyInfo = WebService.getInstance().verify(token, "12345");
 			JsonObject jo = JsonObject.fromJson(verifyInfo);
 			Integer code = jo.getInt("code");
-			if (code != 1) { 
-				CoreTracer.debug(this.getClass(),"[DEBUG] session is expired!");
+			if (code != 1) {
+				CoreTracer.debug(this.getClass(), "[DEBUG] session is expired!");
 				writeErrorMessage(user, SystemNetworkConstant.COMMAND_USER_LOGIN, ErrorCode.SESSION_EXPIRED,
 						"Session đã hết hạn");
 				return;
@@ -55,7 +55,6 @@ public class LoginRequestHandler extends AbstractRequestHandler {
 						"Tài khoản đã được đăng nhập bởi nơi khác");
 
 				coreApi.logout(pUser);
-				return;
 			}
 
 			String fullName = userObj.getString("full_name");

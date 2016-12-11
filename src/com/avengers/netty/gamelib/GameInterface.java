@@ -57,6 +57,8 @@ public interface GameInterface {
 	 */
 	public JsonObject getGameData();
 
+	public boolean isPlaying();
+
 	/**
 	 * User rời phòng game
 	 * 

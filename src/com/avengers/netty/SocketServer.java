@@ -9,7 +9,6 @@ import com.avengers.netty.core.dao.DataManager;
 import com.avengers.netty.core.event.SystemNetworkConstant;
 import com.avengers.netty.core.event.handler.SystemHandlerManager;
 import com.avengers.netty.core.event.service.SystemMessageExecutor;
-import com.avengers.netty.core.service.CacheService;
 import com.avengers.netty.core.service.ExtensionManager;
 import com.avengers.netty.core.service.GameManager;
 import com.avengers.netty.core.service.IClusterService;
@@ -189,7 +188,6 @@ public class SocketServer {
 	}
 
 	public void initServerService() {
-		CacheService.getInstance();
 		DataManager.getInstance();
 		systemHandlerManager = new SystemHandlerManager();
 		messageHandler.setSystemHandlerManager(systemHandlerManager);
